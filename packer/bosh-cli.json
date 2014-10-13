@@ -10,7 +10,7 @@
     "guest_additions_path": "/home/vagrant/VBoxGuestAdditions.iso",
     "virtualbox_version_file": ".vbox_version",
 
-    "headless": "true",
+    "headless": true,
 
     "boot_wait": "10s",
     "boot_command": [
@@ -46,6 +46,7 @@
 
     "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
 
+    "vm_name": "bosh-cli",
     "vboxmanage": [
       [ "modifyvm", "{{ .Name }}", "--memory", "2048" ],
       [ "modifyvm", "{{ .Name }}", "--cpus", "2" ]
@@ -97,6 +98,8 @@
 
     "shutdown_command": "echo 'vagrant'|sudo -S shutdown -P now",
 
+    "vm_name": "bosh-cli",
+    "vmdk_name": "bosh-cli",
     "vmx_data": {
       "memsize": "2048",
       "numvcpus": "2",
@@ -109,8 +112,9 @@
     "execute_command": "echo 'vagrant' | {{ .Vars }} sudo -S -E {{ .Path }}",
     "scripts": [
       "scripts/quiet-tty-warning.sh",
-      "scripts/admin-sudoers.sh",
+      "scripts/vagrant-sudoers.sh",
       "scripts/apt-update.sh",
+      "scripts/essentials.sh",
       "scripts/update-trusty-kernel.sh"
     ]
   },{
@@ -127,13 +131,9 @@
     "type": "shell",
     "scripts": [
       "scripts/vagrant-pub-key.sh",
-      "scripts/essentials.sh",
       "scripts/ruby.sh",
       "scripts/cf-tools.sh"
     ]
-  },{
-    "type": "shell",
-    "inline": "echo 'vagrant' | sudo -S usermod -a -G admin vagrant"
   },{
     "type": "shell",
     "execute_command": "echo 'vagrant' | {{ .Vars }} sudo -S -E {{ .Path }}",
