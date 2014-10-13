@@ -124,7 +124,6 @@
     "script": "scripts/vmware-tools.sh",
     "only": ["vmware-iso"]
   },{
-  },{
     "type": "shell",
     "scripts": [
       "scripts/vagrant-pub-key.sh",
