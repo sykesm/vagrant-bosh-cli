@@ -1,0 +1,149 @@
+{
+  "builders": [{
+    "type": "virtualbox-iso",
+
+    "iso_url": "http://releases.ubuntu.com/14.04/ubuntu-14.04-server-amd64.iso",
+    "iso_checksum": "4d94f6111b8fe47da94396180ce499d8c0bb44f3",
+    "iso_checksum_type": "sha1",
+
+    "guest_os_type": "Ubuntu_64",
+    "guest_additions_path": "/home/vagrant/VBoxGuestAdditions.iso",
+    "virtualbox_version_file": ".vbox_version",
+
+    "headless": "true",
+
+    "boot_wait": "10s",
+    "boot_command": [
+      "<esc><esc><enter><wait>",
+      "/install/vmlinuz auto",
+      " console-setup/ask_detect=false",
+      " console-setup/layoutcode=us",
+      " console-setup/modelcode=pc105",
+      " debconf/frontend=noninteractive",
+      " debian-installer=en_US",
+      " fb=false",
+      " initrd=/install/initrd.gz",
+      " kbd-chooser/method=us",
+      " keyboard-configuration/layout=USA",
+      " keyboard-configuration/variant=USA",
+      " locale=en_US",
+      " netcfg/get_domain=vm",
+      " netcfg/get_hostname=vagrant",
+      " noapic",
+      " nomodeset",
+      " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg",
+      " -- ",
+      "<enter>"
+    ],
+
+    "http_directory": "http",
+
+    "ssh_username": "vagrant",
+    "ssh_password": "vagrant",
+    "ssh_wait_timeout": "60m",
+
+    "disk_size": 102400,
+
+    "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
+
+    "vboxmanage": [
+      [ "modifyvm", "{{ .Name }}", "--memory", "2048" ],
+      [ "modifyvm", "{{ .Name }}", "--cpus", "2" ]
+    ]
+  },{
+    "type": "vmware-iso",
+
+    "iso_url": "http://releases.ubuntu.com/14.04/ubuntu-14.04-server-amd64.iso",
+    "iso_checksum": "4d94f6111b8fe47da94396180ce499d8c0bb44f3",
+    "iso_checksum_type": "sha1",
+
+    "guest_os_type": "ubuntu-64",
+    "headless": true,
+
+    "tools_upload_flavor": "linux",
+    "tools_upload_path": "/home/vagrant/linux.iso",
+
+    "boot_wait": "10s",
+    "boot_command": [
+      "<esc><esc><enter><wait>",
+      "/install/vmlinuz auto",
+      " console-setup/ask_detect=false",
+      " console-setup/layoutcode=us",
+      " console-setup/modelcode=pc105",
+      " debconf/frontend=noninteractive",
+      " debian-installer=en_US",
+      " fb=false",
+      " initrd=/install/initrd.gz",
+      " kbd-chooser/method=us",
+      " keyboard-configuration/layout=USA",
+      " keyboard-configuration/variant=USA",
+      " locale=en_US",
+      " netcfg/get_domain=vm",
+      " netcfg/get_hostname=vagrant",
+      " noapic",
+      " nomodeset",
+      " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg",
+      " -- ",
+      "<enter>"
+    ],
+
+    "http_directory": "http",
+
+    "ssh_username": "vagrant",
+    "ssh_password": "vagrant",
+    "ssh_wait_timeout": "60m",
+
+    "disk_size": 102400,
+
+    "shutdown_command": "echo 'vagrant'|sudo -S shutdown -P now",
+
+    "vmx_data": {
+      "memsize": "2048",
+      "numvcpus": "2",
+      "cpuid.coresPerSocket": "1"
+    }
+  }],
+
+  "provisioners": [{
+    "type": "shell",
+    "execute_command": "echo 'vagrant' | {{ .Vars }} sudo -S -E {{ .Path }}",
+    "scripts": [
+      "scripts/quiet-tty-warning.sh",
+      "scripts/vagrant-pub-key.sh",
+      "scripts/admin-sudoers.sh",
+      "scripts/apt-update.sh",
+      "scripts/update-trusty-kernel.sh"
+    ]
+  },{
+    "type": "shell",
+    "execute_command": "echo 'vagrant' | {{ .Vars }} sudo -S -E {{ .Path }}",
+    "script": "scripts/vbox-guest-additions.sh",
+    "only": ["virtualbox-iso"]
+  },{
+    "type": "shell",
+    "execute_command": "echo 'vagrant' | {{ .Vars }} sudo -S -E {{ .Path }}",
+    "script": "scripts/vmware-tools.sh",
+    "only": ["vmware-iso"]
+  },{
+    "type": "shell",
+    "inline": "echo 'vagrant' | sudo -S usermod -a -G admin vagrant"
+  },{
+    "type": "shell",
+    "execute_command": "echo 'vagrant' | {{ .Vars }} sudo -S -E {{ .Path }}",
+    "scripts": [
+      "scripts/essentials.sh",
+      "scripts/ruby.sh",
+      "scripts/cf-tools.sh",
+      "scripts/kernel-cleanup.sh",
+      "scripts/clean-up.sh",
+      "scripts/shrink-disk.sh"
+    ]
+  }],
+
+  "post-processors": [{
+    "type": "vagrant",
+    "keep_input_artifact": true,
+    "compression_level": 9,
+    "output": "bosh-lite-cli-{{.Provider}}.box"
+  }]
+}
