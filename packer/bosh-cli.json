@@ -127,7 +127,7 @@
   },{
     "type": "shell",
     "scripts": [
-      "scripts/vagrant-pub-key.sh"
+      "scripts/vagrant-pub-key.sh",
       "scripts/essentials.sh",
       "scripts/ruby.sh",
       "scripts/cf-tools.sh"
