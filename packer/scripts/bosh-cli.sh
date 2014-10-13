@@ -23,5 +23,5 @@ rbenv global 1.9.3-p547
 
 echo "gem: --no-ri --no-rdoc" > ~/.gemrc
 
-# Required for pre-packaging
+gem install bosh_cli --no-ri --no-rdoc
 gem install bundler --no-ri --no-rdoc

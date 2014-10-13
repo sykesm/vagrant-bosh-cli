@@ -1,7 +1,5 @@
 #!/bin/bash
 
-gem install bosh_cli --no-ri --no-rdoc
-
 wget https://github.com/cloudfoundry-incubator/spiff/releases/download/v1.0.3/spiff_linux_amd64.zip -O /tmp/spiff.zip
 sudo unzip -d /usr/local/bin /tmp/spiff.zip && rm /tmp/spiff.zip
 

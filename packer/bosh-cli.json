@@ -131,7 +131,7 @@
     "type": "shell",
     "scripts": [
       "scripts/vagrant-pub-key.sh",
-      "scripts/ruby.sh",
+      "scripts/bosh-cli.sh",
       "scripts/cf-tools.sh"
     ]
   },{
