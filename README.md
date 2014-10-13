@@ -11,13 +11,13 @@ for people running Windows to get going with bosh.
 
 The `Vagrantfile` defines two machines: cli and bosh-lite.
 
-# cli
+### cli
 
 The `cli` machine contains git, ruby, the bosh cli, and other miscellaneous tools required to create
 a Cloud Foundry release and deploy it.  A clone of cf-release and bosh-lite are have also been made to
 the default locations used by the Cloud Foundry README's.
 
-# bosh-lite
+### bosh-lite
 
 The `bosh-lite` machine simpy uses most recent [bosh-lite](https://github.com/cloudfoundry/bosh-lite)
 box that's been published by the Cloud Foundry team.
