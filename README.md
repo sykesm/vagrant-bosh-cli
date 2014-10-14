@@ -30,6 +30,6 @@ The scripts and templates used to create the cli box are found in the packer tre
 
 Please `vagrant ssh` into the cli machine and follow the manual deployment instructions from the
 [deployment guide](https://github.com/cloudfoundry/bosh-lite/blob/master/docs/deploy-cf.md).
-The bosh cli and spiff have already been installed for you and cf-release has been already been
-cloned but you should bring it up to date with `cd ~/workspace/cf-release; ./update`.
+The bosh cli and spiff have already been installed for you and cf-release has already been cloned
+but you should bring it up to date with `cd ~/workspace/cf-release; ./update`.
 
